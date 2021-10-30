@@ -45,23 +45,24 @@ router.get("/favorite", function (req, res) {
 
 router.post("/add", function (req, res) {
   // update apod status
-  const url = req.body.image_url;
-  const img_date = req.body.date;
-  const apods = new APODS({
-    image_url: url,
-    date: img_date
-  })
-  apods.save((error, document) => {
-    if (error) {
-      res.json({ status : "failure"})
-    } else {
-      res.json({
-        status : "success", 
-        id: apods._id,  
-        content: req.body
-      })
-    }
-  }) 
+  console.log(req)
+  // const url = req.body.image_url;
+  // const img_date = req.body.date;
+  // const apods = new APODS({
+  //   image_url: url,
+  //   date: img_date
+  // })
+  // apods.save((error, document) => {
+  //   if (error) {
+  //     res.json({ status : "failure"})
+  //   } else {
+  //     res.json({
+  //       status : "success", 
+  //       id: apods._id,  
+  //       content: req.body
+  //     })
+  //   }
+  // }) 
 });
 
 router.route("/delete")
