@@ -19,15 +19,31 @@ const dateToString = (year, month, day) =>
   String(year) + "-" + String(month) + "-" + String(day);
 
 document.getElementById("heart-button").addEventListener("click", () => {
+    const apod_img = document.getElementById("apod-image")
+    const url = apod_img.src
+    const date_img = document.getElementById("apod-date")
+    const date = date_img.innerText
   let heart = document.getElementById("heart-button");
   if (heart_status == 0) {
     heart.src = "static/heart-filled.png";
     heart_status = 1;
     // TODO: update the database and mark this image as a favorite image.
+
+    fetch("http://localhost:8080/api/add", {
+      image_url: url,
+      date: date
+    })
+    .then(response => response.json)
+    .then(json => console.log(json))
   } else {
     heart_status = 0;
-    heart.src = "static/heart.png";
     // TODO: update the database and un-mark this image as a favorite image.
+    heart.src = "static/heart.png";
+    fetch("http://localhost:8080/api/delete", {
+      date: date
+    })
+    .then(response => response.json)
+    .then(json => console.log(json))
   }
 });
 
