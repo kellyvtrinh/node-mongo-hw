@@ -5,6 +5,7 @@ var date = new Date();
 var year = date.getFullYear();
 var month = date.getMonth();
 var day = date.getDate();
+var url = "";
 
 const previousDate = (year, month, day) => {
   if (day - 1 < 1) {
@@ -19,22 +20,21 @@ const dateToString = (year, month, day) =>
   String(year) + "-" + String(month) + "-" + String(day);
 
 document.getElementById("heart-button").addEventListener("click", () => {
-    const apod_img = document.getElementById("apod-image")
-    const url = apod_img.src
-    const date_img = document.getElementById("apod-date")
-    const date = date_img.innerText
   let heart = document.getElementById("heart-button");
   if (heart_status == 0) {
     heart.src = "static/heart-filled.png";
     heart_status = 1;
     // TODO: update the database and mark this image as a favorite image.
+    url = document.getElementById("apod-image").src;
+    console.log(url);
 
     fetch("http://localhost:8080/api/add", {
       method: "POST",
       body: JSON.stringify({
         image_url: url,
         date: dateToString(year, month, day)
-      })
+      }),
+      headers: {"Content-type": "application/json; charset=UTF-8"}
       
     })
     .then(response => response.json)
@@ -44,10 +44,12 @@ document.getElementById("heart-button").addEventListener("click", () => {
     // TODO: update the database and un-mark this image as a favorite image.
     heart.src = "static/heart.png";
     fetch("http://localhost:8080/api/delete", {
-      date: date
+      method: "DELETE", 
+      body: JSON.stringify({
+        date: dateToString(year, month, day),
+      }), 
+      headers: {"Content-type": "application/json; charset=UTF-8"} 
     })
-    .then(response => response.json)
-    .then(json => console.log(json))
   }
 });
 
@@ -67,5 +69,6 @@ document.getElementById("next-button").addEventListener("click", () => {
       document.getElementById("apod-image").src = r.url;
       document.getElementById("apod-title").innerHTML = r.title;
       document.getElementById("apod-p").innerHTML = r.explanation;
+      url = r.url;
     });
 });

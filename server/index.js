@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const mongoose = require("mongoose");
-const url = "mongodb://127.0.0.1:27017/mongo-node"; // change this as needed
+const url = "mongodb://127.0.0.1:27017/hw-nodemongo"; // change this as needed
 
 mongoose.connect(url, { useNewUrlParser: true });
 

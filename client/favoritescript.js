@@ -21,11 +21,11 @@
   };
 
   fetch('http://localhost:8080/api/favorite')
-  .then(response => response.json)
+  .then(response => response.json())
   .then(jsonResponse => {
-    console.log(jsonResponse);
     var al = document.getElementById("apod-list");
-    for (apod in jsonResponse.results) {
+    for (apod of jsonResponse.apods) {
+      console.log(apod);
       al.appendChild(makeAPOD(apod.image_url, apod.date));
     }
   })
