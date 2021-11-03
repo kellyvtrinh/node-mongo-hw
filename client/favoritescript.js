@@ -1,4 +1,4 @@
-const { response } = require("express");
+// const { response } = require("express");
 
 (() => {
   // makeAPOD is used to create a APOD node in the following format:
@@ -20,37 +20,14 @@ const { response } = require("express");
     return div;
   };
 
-  // TODO: Fetch a list of APODs from the database.
-  // You code should be something like:
-  // fetch(...)
-  //    .then(response => response.json())
-  //    .then(json => {
-  //        apods = json...
-  //        for (apod of apods) {
-  //           console.log(apod);
-  //           al.appendChild(makeAPOD(apod[0], apod[1]));
-  //        }
-  //    });
-  // Here the apods are filled with dummy data.
-
   fetch('http://localhost:8080/api/favorite')
   .then(response => response.json)
-  .then(json => {
-    apods = json
+  .then(jsonResponse => {
+    console.log(jsonResponse);
+    var al = document.getElementById("apod-list");
+    for (apod in jsonResponse.results) {
+      al.appendChild(makeAPOD(apod.image_url, apod.date));
+    }
   })
-  // apods = [
-  //   [
-  //     "https://apod.nasa.gov/apod/image/2102/rosette_goldman_960.jpg",
-  //     "02-21-2021",
-  //   ],
-  //   [
-  //     "https://apod.nasa.gov/apod/image/2102/rosette_goldman_960.jpg",
-  //     "02-20-2021",
-  //   ],
-  // ];
-  var al = document.getElementById("apod-list");
-  for (apod of apods) {
-    console.log(apod);
-    al.appendChild(makeAPOD(apod[0], apod[1]));
-  }
+
 })();

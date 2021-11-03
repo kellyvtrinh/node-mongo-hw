@@ -30,8 +30,12 @@ document.getElementById("heart-button").addEventListener("click", () => {
     // TODO: update the database and mark this image as a favorite image.
 
     fetch("http://localhost:8080/api/add", {
-      image_url: url,
-      date: date
+      method: "POST",
+      body: JSON.stringify({
+        image_url: url,
+        date: dateToString(year, month, day)
+      })
+      
     })
     .then(response => response.json)
     .then(json => console.log(json))

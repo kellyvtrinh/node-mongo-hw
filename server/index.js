@@ -1,8 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const mongoose = require("mongoose");
-const url = "mongodb://127.0.0.1:27017/mongo-node-hw"; // change this as needed
+const url = "mongodb://127.0.0.1:27017/mongo-node"; // change this as needed
 
 mongoose.connect(url, { useNewUrlParser: true });
 
@@ -45,41 +46,34 @@ router.get("/favorite", function (req, res) {
 
 router.post("/add", function (req, res) {
   // update apod status
-  console.log(req)
-  // const url = req.body.image_url;
-  // const img_date = req.body.date;
-  // const apods = new APODS({
-  //   image_url: url,
-  //   date: img_date
-  // })
-  // apods.save((error, document) => {
-  //   if (error) {
-  //     res.json({ status : "failure"})
-  //   } else {
-  //     res.json({
-  //       status : "success", 
-  //       id: apods._id,  
-  //       content: req.body
-  //     })
-  //   }
-  // }) 
-});
-
-router.route("/delete")
-.get((req, res) => {
-  APODS.find({date: req.body.date}, (error, apod) => {
+  const url = req.body.image_url;
+  const img_date = req.body.date;
+  const apods = new APODS({
+    image_url: url,
+    date: img_date
+  })
+  apods.save((error, document) => {
     if (error) {
       res.json({ status : "failure"})
     } else {
-      res.json(apod)
+      res.json({
+        image_url: url,
+        date: img_date
+      })
     }
+  }) 
+});
+
+router.delete("/delete", (req, res) => {
+  APODS.findOneAndDelete({date : req.body.date}).then(() => {
+    res.json({message: "delete success"})
   })
-})
-.delete((req, res) => {});
+});
 
 
-
+app.use(cors());
 app.use("/api", router); // API Root url at: http://localhost:8080/api
+
 
 app.listen(port);
 console.log("Server listenning on port " + port);
